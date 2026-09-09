@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df61d01961b725d4992c60df7745bf20, type: 3}
+  m_Name: Quest_TaraWatch
+  m_EditorClassIdentifier: Assembly-CSharp::QuestDefinition
+  questId: tara_watch_quest
+  npcName: Tara
+  itemDisplayName: Tara's Watch
+  locationHint: It slipped off near the water line next to the pier.
+  itemIdToUnlock: tara_watch
+  storyFlagIdOnComplete: tara_watch_returned
+  availableFromDay: 1
+  requiredCompletedQuestId: 
+  offerWindows: []
+  dialogueLines:
+  - Darn it! I lost my watch. Would you be a sweet heart and find it for me?
+  - I think it slipped off near the pier, somewhere along the water line...
+  - Pleeeeease get me back my watch! I'll give you a special reward for it. Teehee!
+  searchingDialogueLines:
+  - Any luck finding my watch yet?
+  - Check near the pier, along the water line. That's where I last had it!
+  turnInDialogueLines:
+  - You found it! Oh thank you, thank you!
+  - "My watch means everything to me. Here \u2014 take this star as thanks!"
+  completedDialogueLines:
+  - Thanks again for finding my watch!
+  - You're the best. I feel so much better now.
+  day2CompletedDialogueLines:
+  - Good morning! Still can't believe you found my watch yesterday.
+  - I've been telling everyone how kind you are. Enjoy the rest of your day at the
+    beach!
+  day2IncompleteDialogueLines:
+  - Oh no, another day and I still don't have my watch...
+  - "I was really hoping someone would help me. It's near the pier \u2014 please,
+    will you look for it?"
+  day3PerfectDialogueLines:
+  - Today is our wedding day! I can't believe everything worked out.
+  - Thank you for finding my watch when it mattered most. You're invited to celebrate
+    with us!
+  day3LateDialogueLines:
+  - "Tom and I are together thanks to you \u2014 even if this week got a little messy."
+  - Better late than never, right? Thanks again for the watch.
+  completedDialogueVariants:
+  - minDay: 3
+    maxDay: 0
+    requiredStoryBeat: {fileID: 11400000, guid: a1b2c3d4e5f60718293a4b5c6d7e8f90, type: 2}
+    requiredStoryFlag: 
+    priority: 100
+    lines:
+    - Today is our wedding day! I can't believe everything worked out.
+    - Thank you for finding my watch when it mattered most. You're invited to celebrate
+      with us!
+  - minDay: 3
+    maxDay: 0
+    requiredStoryBeat: {fileID: 11400000, guid: b2c3d4e5f60718293a4b5c6d7e8f901a, type: 2}
+    requiredStoryFlag: 
+    priority: 50
+    lines:
+    - "Tom and I are together thanks to you \u2014 even if this week got a little messy."
+    - Better late than never, right? Thanks again for the watch.
+  day1BlockedDialogueLines: []
+  day2BlockedDialogueLines: []
+  day3BlockedDialogueLines: []

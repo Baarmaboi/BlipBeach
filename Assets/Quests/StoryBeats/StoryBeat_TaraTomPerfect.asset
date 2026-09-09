@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a4b8c2d1e3f4056789012345678abcd, type: 3}
+  m_Name: StoryBeat_TaraTomPerfect
+  m_EditorClassIdentifier: Assembly-CSharp::StoryBeatDefinition
+  beatId: tara_tom_perfect
+  storyFlagIdToSet: tara_tom_perfect_arc
+  requirements:
+  - questId: tara_watch_quest
+    completedOnExactDay: 1
+    completedOnMinDay: 0
+    completedOnMaxDay: 0
+  - questId: tom_ring
+    completedOnExactDay: 2
+    completedOnMinDay: 0
+    completedOnMaxDay: 0
+  beatsThatMustNotBeSatisfied: []

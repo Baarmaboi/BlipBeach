@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df61d01961b725d4992c60df7745bf20, type: 3}
+  m_Name: Quest_TomRing
+  m_EditorClassIdentifier: Assembly-CSharp::QuestDefinition
+  questId: tom_ring
+  npcName: Tom
+  itemDisplayName: Engagement Ring
+  locationHint: Somewhere along the beach near the dunes.
+  itemIdToUnlock: tom_ring
+  storyFlagIdOnComplete: tom_ring_returned
+  availableFromDay: 2
+  requiredCompletedQuestId: tara_watch_quest
+  offerWindows:
+  - minDay: 2
+    maxDay: 2
+    prerequisiteQuestId: tara_watch_quest
+    prerequisiteCompletedOnExactDay: 1
+    prerequisiteCompletedOnMinDay: 0
+    prerequisiteCompletedOnMaxDay: 0
+  - minDay: 3
+    maxDay: 0
+    prerequisiteQuestId: tara_watch_quest
+    prerequisiteCompletedOnExactDay: 0
+    prerequisiteCompletedOnMinDay: 2
+    prerequisiteCompletedOnMaxDay: 0
+  dialogueLines:
+  - Tara made it! I was going to propose today but I lost the ring on the beach.
+  - Would you help me find it? I hid it near the dunes so she'd never guess...
+  - Please — this has to be perfect.
+  searchingDialogueLines:
+  - Any luck with the ring? I think I dropped it near the dunes.
+  - Check the sandy spots away from the water. It has to be there!
+  turnInDialogueLines:
+  - You found it! Oh man, you have no idea what this means.
+  - Tara's going to say yes — here, take this star. You earned it.
+  completedDialogueLines:
+  - Thanks again for the ring. You're part of this story now.
+  day2CompletedDialogueLines:
+  - Still can't believe you found the ring in time.
+  - Tara and I owe you everything.
+  day2IncompleteDialogueLines: []
+  day3PerfectDialogueLines:
+  - Today's the day — we're getting married at the Tiki Hut!
+  - You made this whole week perfect. Thank you.
+  day3LateDialogueLines:
+  - We made it work, even if the timing was tight.
+  - Thanks for sticking with us through the week.
+  completedDialogueVariants:
+  - minDay: 3
+    maxDay: 0
+    requiredStoryBeat: {fileID: 11400000, guid: a1b2c3d4e5f60718293a4b5c6d7e8f90, type: 2}
+    requiredStoryFlag: 
+    priority: 100
+    lines:
+    - Today's the day — we're getting married at the Tiki Hut!
+    - You made this whole week perfect. Thank you.
+  - minDay: 3
+    maxDay: 0
+    requiredStoryBeat: {fileID: 11400000, guid: b2c3d4e5f60718293a4b5c6d7e8f901a, type: 2}
+    requiredStoryFlag: 
+    priority: 50
+    lines:
+    - We made it work, even if the timing was tight.
+    - Thanks for sticking with us through the week.
+  day1BlockedDialogueLines:
+  - Tomorrow's the big day. Tara and I are finally meeting up on the beach!
+  - I can barely sleep — I've got a surprise planned for her.
+  day2BlockedDialogueLines:
+  - Where is Tara? She was supposed to meet me here...
+  - Did she blow me off? I hope she's okay.
+  day3BlockedDialogueLines:
+  - A guy just can't catch a break this week.
+  - Tara never showed up. I don't know what went wrong.
