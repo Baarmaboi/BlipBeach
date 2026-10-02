@@ -307,63 +307,95 @@ public class MarketUI : MonoBehaviour
 
         tabs.Clear();
 
-        if (metalTabs != null && metalTabs.Length > 0)
+        // Prefer the inspector array only when it has real entries.
+        // An empty/null slot (Length > 0 but all Missing) used to block the Tabs fallback
+        // and left filterShowAll stuck on, so clicks did nothing.
+        CollectTabsFromArray();
+        if (tabs.Count == 0)
         {
-            for (int i = 0; i < metalTabs.Length; i++)
-            {
-                MarketMetalTab tab = metalTabs[i];
-                if (tab == null)
-                {
-                    continue;
-                }
-
-                Button button = tab.GetComponent<Button>();
-                if (button == null)
-                {
-                    continue;
-                }
-
-                AddTab(button, tab.showAll, tab.metal, tab);
-            }
-        }
-        else if (panel != null)
-        {
-            Transform tabsRoot = panel.transform.Find("Tabs");
-            if (tabsRoot == null)
-            {
-                tabsRoot = FindDeepChild(panel.transform, "Tabs");
-            }
-
-            if (tabsRoot != null)
-            {
-                for (int i = 0; i < tabsRoot.childCount; i++)
-                {
-                    Transform child = tabsRoot.GetChild(i);
-                    Button button = child.GetComponent<Button>();
-                    if (button == null)
-                    {
-                        continue;
-                    }
-
-                    MarketMetalTab tabComp = child.GetComponent<MarketMetalTab>();
-                    if (tabComp != null)
-                    {
-                        AddTab(button, tabComp.showAll, tabComp.metal, tabComp);
-                        continue;
-                    }
-
-                    if (TryParseTabName(child.name, out bool showAll, out MetalType metal))
-                    {
-                        AddTab(button, showAll, metal, null);
-                    }
-                }
-            }
+            CollectTabsFromHierarchy();
         }
 
         for (int i = 0; i < tabs.Count; i++)
         {
             int index = i;
             tabs[i].button.onClick.AddListener(() => SelectTab(index, refreshList: true));
+        }
+    }
+
+    private void CollectTabsFromArray()
+    {
+        if (metalTabs == null || metalTabs.Length == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < metalTabs.Length; i++)
+        {
+            MarketMetalTab tab = metalTabs[i];
+            if (tab == null)
+            {
+                continue;
+            }
+
+            Button button = tab.GetComponent<Button>();
+            if (button == null)
+            {
+                button = tab.GetComponentInChildren<Button>(true);
+            }
+
+            if (button == null)
+            {
+                continue;
+            }
+
+            AddTab(button, tab.showAll, tab.metal, tab);
+        }
+    }
+
+    private void CollectTabsFromHierarchy()
+    {
+        if (panel == null)
+        {
+            return;
+        }
+
+        Transform tabsRoot = panel.transform.Find("Tabs");
+        if (tabsRoot == null)
+        {
+            tabsRoot = FindDeepChild(panel.transform, "Tabs");
+        }
+
+        if (tabsRoot == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < tabsRoot.childCount; i++)
+        {
+            Transform child = tabsRoot.GetChild(i);
+            Button button = child.GetComponent<Button>();
+            if (button == null)
+            {
+                button = child.GetComponentInChildren<Button>(true);
+            }
+
+            if (button == null)
+            {
+                continue;
+            }
+
+            MarketMetalTab tabComp = child.GetComponent<MarketMetalTab>();
+            if (tabComp != null)
+            {
+                AddTab(button, tabComp.showAll, tabComp.metal, tabComp);
+                continue;
+            }
+
+            if (TryParseTabName(child.name, out bool showAll, out MetalType metal))
+            {
+                AddTab(button, showAll, metal, null);
+            }
         }
     }
 
