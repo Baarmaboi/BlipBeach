@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Orbit follow camera with a light "talk mode" blend for dialogue.
-/// Yaw is preserved during talk so player movement still faces correctly after ExitTalkMode.
+/// Orbit follow camera with talk mode (dialogue) and fixed-shot mode (shop).
+/// Yaw is preserved during special modes so player facing stays correct after exit.
 /// </summary>
 public class ThirdPersonCamera : MonoBehaviour
 {
@@ -29,6 +29,11 @@ public class ThirdPersonCamera : MonoBehaviour
     [Tooltip("Raises the look point so we aim near the NPC's head when given their root transform.")]
     [SerializeField] private float talkLookHeightBoost = 1.35f;
 
+    [Header("Fixed shot (shop)")]
+    [Tooltip("Blend duration for shop / world fixed shots. Falls back to talk blend if <= 0.")]
+    [SerializeField] private float fixedShotBlendDuration = 0.45f;
+    [SerializeField] private AnimationCurve fixedShotBlendCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
     private float yaw;
     private float pitch;
     private Vector3 followVelocity;
@@ -38,11 +43,14 @@ public class ThirdPersonCamera : MonoBehaviour
         Orbit,
         BlendToTalk,
         Talk,
+        BlendToFixed,
+        Fixed,
         BlendToOrbit
     }
 
     private Mode mode = Mode.Orbit;
     private Transform talkLookAt;
+    private Transform fixedShotAnchor;
     private float blendElapsed;
     private Vector3 blendFromPos;
     private Quaternion blendFromRot;
@@ -50,6 +58,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public float Yaw => yaw;
     public bool LookEnabled { get; set; } = true;
     public bool IsInTalkMode => mode == Mode.Talk || mode == Mode.BlendToTalk;
+    public bool IsInFixedShotMode => mode == Mode.Fixed || mode == Mode.BlendToFixed;
 
     private void Start()
     {
@@ -68,6 +77,7 @@ public class ThirdPersonCamera : MonoBehaviour
     public void EnterTalkMode(Transform lookAt = null)
     {
         talkLookAt = lookAt != null ? lookAt : defaultTalkLookAt;
+        fixedShotAnchor = null;
         LookEnabled = false;
         followVelocity = Vector3.zero;
 
@@ -80,17 +90,44 @@ public class ThirdPersonCamera : MonoBehaviour
     /// <summary>Blend from talk pose back to the normal orbit follow. Does not change yaw.</summary>
     public void ExitTalkMode()
     {
-        if (mode == Mode.Orbit)
+        if (mode != Mode.Talk && mode != Mode.BlendToTalk)
         {
             return;
         }
 
         talkLookAt = null;
+        BeginBlendToOrbit();
+    }
+
+    /// <summary>Blend to an exact world camera pose (position + rotation) from a scene Transform.</summary>
+    public void EnterFixedShot(Transform shotAnchor)
+    {
+        if (shotAnchor == null)
+        {
+            Debug.LogWarning("ThirdPersonCamera: EnterFixedShot called with null shotAnchor.");
+            return;
+        }
+
+        fixedShotAnchor = shotAnchor;
+        LookEnabled = false;
         followVelocity = Vector3.zero;
+
         blendFromPos = transform.position;
         blendFromRot = transform.rotation;
         blendElapsed = 0f;
-        mode = Mode.BlendToOrbit;
+        mode = Mode.BlendToFixed;
+    }
+
+    /// <summary>Blend from fixed shot back to orbit. Does not change yaw.</summary>
+    public void ExitFixedShot()
+    {
+        if (mode != Mode.Fixed && mode != Mode.BlendToFixed)
+        {
+            return;
+        }
+
+        fixedShotAnchor = null;
+        BeginBlendToOrbit();
     }
 
     /// <summary>Sync orbit yaw to the follow target's current Y rotation (after talk facing).</summary>
@@ -107,6 +144,15 @@ public class ThirdPersonCamera : MonoBehaviour
         yaw = Mathf.Repeat(yawDegrees, 360f);
     }
 
+    private void BeginBlendToOrbit()
+    {
+        followVelocity = Vector3.zero;
+        blendFromPos = transform.position;
+        blendFromRot = transform.rotation;
+        blendElapsed = 0f;
+        mode = Mode.BlendToOrbit;
+    }
+
     private void LateUpdate()
     {
         if (target == null)
@@ -114,7 +160,7 @@ public class ThirdPersonCamera : MonoBehaviour
             return;
         }
 
-        // Mouse look only in free orbit — talk blends ignore mouse so yaw stays stable.
+        // Mouse look only in free orbit — special modes keep yaw stable.
         if (LookEnabled && mode == Mode.Orbit)
         {
             yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -128,15 +174,28 @@ public class ThirdPersonCamera : MonoBehaviour
                 ApplyOrbitFollow();
                 break;
             case Mode.BlendToTalk:
-                UpdateBlend(toTalk: true);
+                UpdateBlend(BlendDestination.Talk);
                 break;
             case Mode.Talk:
                 ApplyTalkPoseImmediate();
                 break;
+            case Mode.BlendToFixed:
+                UpdateBlend(BlendDestination.Fixed);
+                break;
+            case Mode.Fixed:
+                ApplyFixedPoseImmediate();
+                break;
             case Mode.BlendToOrbit:
-                UpdateBlend(toTalk: false);
+                UpdateBlend(BlendDestination.Orbit);
                 break;
         }
+    }
+
+    private enum BlendDestination
+    {
+        Talk,
+        Fixed,
+        Orbit
     }
 
     private void ApplyOrbitFollow()
@@ -158,33 +217,68 @@ public class ThirdPersonCamera : MonoBehaviour
         transform.rotation = rot;
     }
 
-    private void UpdateBlend(bool toTalk)
+    private void ApplyFixedPoseImmediate()
     {
-        float duration = Mathf.Max(0.01f, talkBlendDuration);
+        GetFixedPose(out Vector3 pos, out Quaternion rot);
+        transform.position = pos;
+        transform.rotation = rot;
+    }
+
+    private void UpdateBlend(BlendDestination destination)
+    {
+        GetBlendSettings(destination, out float duration, out AnimationCurve curve);
+        duration = Mathf.Max(0.01f, duration);
         blendElapsed += Time.unscaledDeltaTime;
         float t = Mathf.Clamp01(blendElapsed / duration);
-        float curved = talkBlendCurve != null && talkBlendCurve.keys.Length > 0
-            ? talkBlendCurve.Evaluate(t)
+        float curved = curve != null && curve.keys.Length > 0
+            ? curve.Evaluate(t)
             : t;
 
-        if (toTalk)
-        {
-            GetTalkPose(out Vector3 endPos, out Quaternion endRot);
-            transform.position = Vector3.Lerp(blendFromPos, endPos, curved);
-            transform.rotation = Quaternion.Slerp(blendFromRot, endRot, curved);
-        }
-        else
-        {
-            // Recompute orbit end each frame so the return target tracks the player.
-            GetOrbitPose(out Vector3 endPos, out Quaternion endRot);
-            transform.position = Vector3.Lerp(blendFromPos, endPos, curved);
-            transform.rotation = Quaternion.Slerp(blendFromRot, endRot, curved);
-        }
+        GetBlendEndPose(destination, out Vector3 endPos, out Quaternion endRot);
+        transform.position = Vector3.Lerp(blendFromPos, endPos, curved);
+        transform.rotation = Quaternion.Slerp(blendFromRot, endRot, curved);
 
         if (t >= 1f)
         {
-            mode = toTalk ? Mode.Talk : Mode.Orbit;
+            mode = destination switch
+            {
+                BlendDestination.Talk => Mode.Talk,
+                BlendDestination.Fixed => Mode.Fixed,
+                _ => Mode.Orbit
+            };
             followVelocity = Vector3.zero;
+        }
+    }
+
+    private void GetBlendSettings(BlendDestination destination, out float duration, out AnimationCurve curve)
+    {
+        if (destination == BlendDestination.Fixed)
+        {
+            duration = fixedShotBlendDuration > 0f ? fixedShotBlendDuration : talkBlendDuration;
+            curve = fixedShotBlendCurve != null && fixedShotBlendCurve.keys.Length > 0
+                ? fixedShotBlendCurve
+                : talkBlendCurve;
+            return;
+        }
+
+        duration = talkBlendDuration;
+        curve = talkBlendCurve;
+    }
+
+    private void GetBlendEndPose(BlendDestination destination, out Vector3 endPos, out Quaternion endRot)
+    {
+        switch (destination)
+        {
+            case BlendDestination.Talk:
+                GetTalkPose(out endPos, out endRot);
+                break;
+            case BlendDestination.Fixed:
+                GetFixedPose(out endPos, out endRot);
+                break;
+            default:
+                // Recompute orbit end each frame so the return target tracks the player.
+                GetOrbitPose(out endPos, out endRot);
+                break;
         }
     }
 
@@ -194,6 +288,18 @@ public class ThirdPersonCamera : MonoBehaviour
         Quaternion orbitRotation = Quaternion.Euler(pitch, yaw, 0f);
         position = focusPoint + orbitRotation * Vector3.back * distance;
         rotation = Quaternion.LookRotation(focusPoint - position, Vector3.up);
+    }
+
+    private void GetFixedPose(out Vector3 position, out Quaternion rotation)
+    {
+        if (fixedShotAnchor != null)
+        {
+            position = fixedShotAnchor.position;
+            rotation = fixedShotAnchor.rotation;
+            return;
+        }
+
+        GetOrbitPose(out position, out rotation);
     }
 
     private void GetTalkPose(out Vector3 position, out Quaternion rotation)

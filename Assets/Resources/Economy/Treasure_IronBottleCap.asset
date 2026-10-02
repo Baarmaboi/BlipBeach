@@ -15,7 +15,7 @@ MonoBehaviour:
   treasureId: iron_bottle_cap
   displayName: Bottle Cap
   metalType: 0
-  baseValue: 4
+  baseValue: 2
   spawnWeight: 10
   weightDepth1: 75
   weightDepth2: 22

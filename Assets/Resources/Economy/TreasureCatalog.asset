@@ -15,6 +15,7 @@ MonoBehaviour:
   treasures:
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0101, type: 2}
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0102, type: 2}
+  - {fileID: 11400000, guid: 86b89f0da37cca0499ff134c9c85f16e, type: 2}
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0201, type: 2}
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0202, type: 2}
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0301, type: 2}
@@ -24,3 +25,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0501, type: 2}
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0601, type: 2}
   - {fileID: 11400000, guid: a11b22c33d44e55f6677889900aa0701, type: 2}
+  - {fileID: 11400000, guid: cd866e5bf490d17499780dee62d68a66, type: 2}

@@ -2,7 +2,7 @@ BongoBeach/Blip Beach is a 3D 3rd person metal detecting game, where the player 
 Controls: Movement (WASD), Camera (Mouse), Jump (Space), Sprint (Shift), Metal Detect (Mouse Left, toggle detectin mode on/off), Interact (E)
 Win Condition (Unlock all Areas on Blip Beach by gaining all the Stars by finding all Lost Items for beach goers)
 Next feature to build:
-Enhancing the NPC interaction system and camera and NPC movements when initiating talk.
+Enhanching quest systems and NPC interactions, Lost Item/Stars/Gated area unlock system.
 
 Long term design goals:
 Three main game loops

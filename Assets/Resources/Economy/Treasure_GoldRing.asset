@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: Ring
   metalType: 6
   baseValue: 160
-  spawnWeight: 1
+  spawnWeight: 3
   weightDepth1: 10
   weightDepth2: 25
   weightDepth3: 65

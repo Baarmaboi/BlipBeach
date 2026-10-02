@@ -80,6 +80,26 @@ public class TreasureCatalog : ScriptableObject
         return PickWeighted(def => def != null && !def.IsPrecious) ?? PickWeighted(def => def != null);
     }
 
+    /// <summary>First catalog entry for this metal, or null.</summary>
+    public TreasureDefinition FindFirstOfMetal(MetalType metal)
+    {
+        if (treasures == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < treasures.Length; i++)
+        {
+            TreasureDefinition def = treasures[i];
+            if (def != null && def.metalType == metal)
+            {
+                return def;
+            }
+        }
+
+        return null;
+    }
+
     private TreasureDefinition PickWeighted(System.Func<TreasureDefinition, bool> predicate)
     {
         float total = 0f;

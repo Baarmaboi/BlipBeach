@@ -13,11 +13,14 @@ public class DialogueUI : MonoBehaviour
     public static event System.Action Closed;
 
     [SerializeField] private GameObject panel;
+    [SerializeField] private Animator panelAnimator;
     [SerializeField] private TMP_Text speakerText;
     [SerializeField] private TMP_Text bodyText;
     [SerializeField] private TMP_Text continueHintText;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private ThirdPersonCamera thirdPersonCamera;
+
+    private static readonly int ShakeTrigger = Animator.StringToHash("Shake");
 
     private string[] lines;
     private int lineIndex;
@@ -28,6 +31,12 @@ public class DialogueUI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        if (panelAnimator == null && panel != null)
+        {
+            panelAnimator = panel.GetComponentInChildren<Animator>(true);
+        }
+
         Hide();
     }
 
@@ -111,6 +120,12 @@ public class DialogueUI : MonoBehaviour
         }
 
         suppressAdvanceUntilKeyUp = Input.GetKey(KeyCode.E);
+        // First line uses appear anim — do not shake on open.
+        if (panelAnimator != null)
+        {
+            panelAnimator.ResetTrigger(ShakeTrigger);
+        }
+
         ShowCurrentLine();
         SetGameplayPaused(true);
         thirdPersonCamera?.EnterTalkMode(talkLookAt);
@@ -125,7 +140,18 @@ public class DialogueUI : MonoBehaviour
             return;
         }
 
+        PlayContinueShake();
         ShowCurrentLine();
+    }
+
+    private void PlayContinueShake()
+    {
+        if (panelAnimator == null)
+        {
+            return;
+        }
+
+        panelAnimator.SetTrigger(ShakeTrigger);
     }
 
     private void ShowCurrentLine()

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c8d2f01b5e3507f9d6b23c0e1f59208, type: 3}
+  m_Name: Treasure_CopperCoin-rare
+  m_EditorClassIdentifier: Assembly-CSharp::TreasureDefinition
+  treasureId: copper_coin
+  displayName: Coin
+  metalType: 1
+  baseValue: 35
+  spawnWeight: 10
+  weightDepth1: 15
+  weightDepth2: 35
+  weightDepth3: 50

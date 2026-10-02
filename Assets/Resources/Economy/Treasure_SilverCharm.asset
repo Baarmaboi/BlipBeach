@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: Charm
   metalType: 5
   baseValue: 80
-  spawnWeight: 2
+  spawnWeight: 8
   weightDepth1: 15
   weightDepth2: 35
   weightDepth3: 50

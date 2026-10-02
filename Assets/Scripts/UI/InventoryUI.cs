@@ -69,7 +69,9 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-        if (DialogueUI.IsOpen || DaySummaryUI.IsOpen || MarketUI.IsOpen)
+        // Do not use EconomyMenus.IsAnyOpen here — it includes InventoryUI.IsOpen,
+        // which would block the same I key that should close this panel.
+        if (DialogueUI.IsOpen || DaySummaryUI.IsOpen || MarketUI.IsOpen || ShopUI.IsOpen)
         {
             return;
         }
@@ -120,7 +122,8 @@ public class InventoryUI : MonoBehaviour
 
         IsOpen = false;
 
-        if (!DialogueUI.IsOpen && !DaySummaryUI.IsOpen && !QuestLogUI.IsOpen && !MarketUI.IsOpen)
+        if (!DialogueUI.IsOpen && !DaySummaryUI.IsOpen && !QuestLogUI.IsOpen
+            && !MarketUI.IsOpen && !ShopUI.IsOpen)
         {
             SetGameplayPaused(false);
         }

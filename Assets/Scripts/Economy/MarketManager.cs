@@ -189,15 +189,25 @@ public class MarketManager : MonoBehaviour
 
     public string FormatBoardLine(MetalType metal)
     {
-        string name = MetalTypes.UpperName(metal).PadRight(9);
+        string name = BoardAbbrev(metal);
         if (!MetalTypes.UsesDailyMarket(metal))
         {
-            return $"{name} STABLE";
+            return $"| {name} STABLE";
         }
 
-        string rate = FormatMultiplier(metal).PadLeft(4);
-        string change = FormatChange(metal);
-        return $"{name} {rate}  {change}";
+        return $"| {name} {FormatMultiplier(metal)} {FormatChange(metal)}";
+    }
+
+    /// <summary>Four-letter board code: IRON, COPP, BRAS, ALUM, LEAD, SILV, GOLD.</summary>
+    private static string BoardAbbrev(MetalType metal)
+    {
+        string upper = MetalTypes.UpperName(metal);
+        if (upper.Length <= 4)
+        {
+            return upper;
+        }
+
+        return upper.Substring(0, 4);
     }
 
     public string BuildBoardText()

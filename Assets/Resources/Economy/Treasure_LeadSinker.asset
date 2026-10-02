@@ -15,7 +15,7 @@ MonoBehaviour:
   treasureId: lead_sinker
   displayName: Sinker
   metalType: 4
-  baseValue: 11
+  baseValue: 8
   spawnWeight: 8
   weightDepth1: 30
   weightDepth2: 45

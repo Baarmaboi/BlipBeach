@@ -94,12 +94,14 @@ public class DayTransitionDirector : MonoBehaviour
             yield return screenFade.FadeInRoutine(morningFadeInDuration);
         }
 
+        // Unpause before ending transition so MorningReady listeners can start dialogue.
+        SetGameplayPaused(false);
+
         if (dayManager != null)
         {
             dayManager.SetTransitioning(false);
         }
 
-        SetGameplayPaused(false);
         sequenceRunning = false;
     }
 
@@ -160,12 +162,13 @@ public class DayTransitionDirector : MonoBehaviour
             yield return screenFade.FadeInRoutine(morningFadeInDuration);
         }
 
+        // Unpause before ending transition so MorningReady listeners can start dialogue.
+        SetGameplayPaused(false);
+
         if (dayManager != null)
         {
             dayManager.SetTransitioning(false);
         }
-
-        SetGameplayPaused(false);
     }
 
     private void ResolveReferences()

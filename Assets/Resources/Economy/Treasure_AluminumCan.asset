@@ -15,7 +15,7 @@ MonoBehaviour:
   treasureId: aluminum_can
   displayName: Can
   metalType: 3
-  baseValue: 7
+  baseValue: 3
   spawnWeight: 12
   weightDepth1: 80
   weightDepth2: 18

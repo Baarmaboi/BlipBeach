@@ -36,6 +36,8 @@ public class DayManager : MonoBehaviour
     private bool gameplayClockActive;
 
     public event Action<int> OnDayStarted;
+    /// <summary>Fires once the morning fade-in finishes and gameplay is unlocked.</summary>
+    public event Action<int> OnMorningReady;
     public event Action<int> OnDayEnded;
     public event Action OnTimeUpdated;
 
@@ -132,11 +134,16 @@ public class DayManager : MonoBehaviour
 
     public void SetTransitioning(bool transitioning)
     {
+        bool wasTransitioning = IsDayTransitioning;
         IsDayTransitioning = transitioning;
         if (!transitioning)
         {
             gameplayClockActive = true;
             OnTimeUpdated?.Invoke();
+            if (wasTransitioning)
+            {
+                OnMorningReady?.Invoke(CurrentDay);
+            }
         }
     }
 

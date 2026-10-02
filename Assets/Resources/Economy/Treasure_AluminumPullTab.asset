@@ -15,7 +15,7 @@ MonoBehaviour:
   treasureId: aluminum_pull_tab
   displayName: Pull Tab
   metalType: 3
-  baseValue: 6
+  baseValue: 1
   spawnWeight: 10
   weightDepth1: 85
   weightDepth2: 14

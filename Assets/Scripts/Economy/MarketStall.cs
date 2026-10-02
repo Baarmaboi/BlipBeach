@@ -6,7 +6,9 @@ using UnityEngine;
 public class MarketStall : MonoBehaviour
 {
     [SerializeField] private float interactRange = 3f;
-    [SerializeField] private string promptMessage = "E — market (sell / upgrades)";
+    [SerializeField] private string promptMessage = "E — market (sell treasures)";
+    [Tooltip("World camera pose for the shop shot (e.g. child ShopCamPosition).")]
+    [SerializeField] private Transform shopCamPosition;
     [SerializeField] private Transform player;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private MetalDetectorController metalDetector;
@@ -63,12 +65,17 @@ public class MarketStall : MonoBehaviour
             return;
         }
 
+        if (shopCamPosition == null)
+        {
+            Debug.LogWarning("MarketStall: ShopCamPosition not assigned — opening UI without shop camera shot.");
+        }
+
         if (InteractionPromptUI.Instance != null)
         {
             InteractionPromptUI.Instance.HideImmediate();
         }
 
-        MarketUI.Instance.Open();
+        MarketUI.Instance.Open(shopCamPosition);
     }
 
     private void ResolvePlayer()

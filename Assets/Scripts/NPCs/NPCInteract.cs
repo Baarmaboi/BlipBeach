@@ -9,6 +9,16 @@ using UnityEngine;
 /// </summary>
 public class NPCInteract : MonoBehaviour
 {
+    public enum TalkTriggerMode
+    {
+        [Tooltip("Optional: show prompt and start talk with E while in range.")]
+        PressE = 0,
+        [Tooltip("Forced: start talk when the player enters a trigger collider.")]
+        ColliderForced = 1,
+        [Tooltip("Forced: start talk automatically at the start of each day, after the morning fade-in.")]
+        DayStartForced = 2
+    }
+
     [Header("Profile (optional)")]
     [SerializeField] private NPCDefinition npcProfile;
     [Tooltip("Overrides quest from NPCDefinition when set.")]
@@ -17,6 +27,8 @@ public class NPCInteract : MonoBehaviour
     [SerializeField] private FlavorDialogueEntry[] flavorDialogue;
 
     [Header("Interaction")]
+    [Tooltip("Press E / Collider Forced / Day Start Forced (after morning fade-in).")]
+    [SerializeField] private TalkTriggerMode talkTriggerMode = TalkTriggerMode.PressE;
     [SerializeField] private float talkRange = 3f;
     [SerializeField] private float faceTurnDuration = 0.28f;
     [SerializeField] private Transform player;
@@ -89,11 +101,13 @@ public class NPCInteract : MonoBehaviour
     private void OnEnable()
     {
         DialogueUI.Closed += OnDialogueClosed;
+        SubscribeDayEvents();
     }
 
     private void OnDisable()
     {
         DialogueUI.Closed -= OnDialogueClosed;
+        UnsubscribeDayEvents();
         StopFaceTurn();
         StopRestoreFacing();
         ReleaseTalkFace();
@@ -101,9 +115,57 @@ public class NPCInteract : MonoBehaviour
         SetLegacyTalkPrompt(false);
     }
 
+    private void Start()
+    {
+        // DayManager may wake after this component's OnEnable.
+        SubscribeDayEvents();
+    }
+
+    private void SubscribeDayEvents()
+    {
+        if (DayManager.Instance == null)
+        {
+            return;
+        }
+
+        DayManager.Instance.OnMorningReady -= OnMorningReady;
+        DayManager.Instance.OnMorningReady += OnMorningReady;
+    }
+
+    private void UnsubscribeDayEvents()
+    {
+        if (DayManager.Instance == null)
+        {
+            return;
+        }
+
+        DayManager.Instance.OnMorningReady -= OnMorningReady;
+    }
+
+    private void OnMorningReady(int day)
+    {
+        if (talkTriggerMode != TalkTriggerMode.DayStartForced)
+        {
+            return;
+        }
+
+        if (!isActiveAndEnabled || !CanStartTalkNow())
+        {
+            return;
+        }
+
+        StartTalk();
+    }
+
     private void Update()
     {
         DialogueUI.UpdateNpcInteractGate();
+
+        if (talkTriggerMode != TalkTriggerMode.PressE)
+        {
+            SetLegacyTalkPrompt(false);
+            return;
+        }
 
         if (player == null || !CanTalkAtAll())
         {
@@ -112,15 +174,7 @@ public class NPCInteract : MonoBehaviour
         }
 
         float distance = Vector3.Distance(transform.position, player.position);
-        bool playerInRange = distance <= talkRange;
-        bool canTalk = playerInRange
-            && IsGameplayInputAllowed()
-            && !DialogueUI.IsOpen
-            && !DialogueUI.SuppressNpcInteract
-            && !QuestLogUI.IsOpen
-            && !DaySummaryUI.IsOpen
-            && !EconomyMenus.IsAnyOpen
-            && !IsDetectorBusy();
+        bool canTalk = distance <= talkRange && CanStartTalkNow();
 
         if (canTalk)
         {
@@ -149,11 +203,61 @@ public class NPCInteract : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (talkTriggerMode != TalkTriggerMode.ColliderForced)
+        {
+            return;
+        }
+
+        if (!IsPlayerCollider(other))
+        {
+            return;
+        }
+
+        if (!CanStartTalkNow())
+        {
+            return;
+        }
+
+        StartTalk();
+    }
+
     private bool CanTalkAtAll()
     {
         return ResolvedQuest != null
             || (npcProfile != null && FlavorDialogueHelper.HasAnyEntries(npcProfile.flavorDialogue))
             || FlavorDialogueHelper.HasAnyEntries(flavorDialogue);
+    }
+
+    private bool CanStartTalkNow()
+    {
+        return CanTalkAtAll()
+            && IsGameplayInputAllowed()
+            && !DialogueUI.IsOpen
+            && !DialogueUI.SuppressNpcInteract
+            && !QuestLogUI.IsOpen
+            && !DaySummaryUI.IsOpen
+            && !EconomyMenus.IsAnyOpen
+            && !IsDetectorBusy()
+            && faceTurnRoutine == null;
+    }
+
+    private bool IsPlayerCollider(Collider other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+
+        if (player != null)
+        {
+            return other.transform == player
+                || other.transform.IsChildOf(player)
+                || other.attachedRigidbody != null && other.attachedRigidbody.transform == player;
+        }
+
+        return other.GetComponentInParent<PlayerMovement>() != null;
     }
 
     private void StartTalk()
@@ -602,6 +706,11 @@ public class NPCInteract : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (talkTriggerMode != TalkTriggerMode.PressE)
+        {
+            return;
+        }
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, talkRange);
     }

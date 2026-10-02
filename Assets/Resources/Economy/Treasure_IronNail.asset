@@ -15,7 +15,7 @@ MonoBehaviour:
   treasureId: iron_nail
   displayName: Nail
   metalType: 0
-  baseValue: 5
+  baseValue: 2
   spawnWeight: 12
   weightDepth1: 70
   weightDepth2: 25
