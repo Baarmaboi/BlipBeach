@@ -40,6 +40,8 @@ public class DayManager : MonoBehaviour
     public event Action<int> OnMorningReady;
     public event Action<int> OnDayEnded;
     public event Action OnTimeUpdated;
+    /// <summary>Fires only when the 3-day loop wraps Day 3 → Day 1 (star gates reset here).</summary>
+    public event Action OnCycleReset;
 
     private void Awake()
     {
@@ -114,14 +116,23 @@ public class DayManager : MonoBehaviour
     public int AdvanceToNextDay()
     {
         int nextDay = CurrentDay + 1;
+        bool wrappedToDay1 = false;
         if (nextDay > totalDays)
         {
             nextDay = 1;
+            wrappedToDay1 = true;
         }
 
         CurrentDay = nextDay;
         TimeRemainingSeconds = dayLengthSeconds;
         OnTimeUpdated?.Invoke();
+
+        if (wrappedToDay1)
+        {
+            AreaUnlockState.ClearAll();
+            OnCycleReset?.Invoke();
+        }
+
         return CurrentDay;
     }
 

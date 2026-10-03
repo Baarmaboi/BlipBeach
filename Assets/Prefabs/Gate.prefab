@@ -836,7 +836,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053177299479143529}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0374cfc41f60e9a46aa76de71f125132, type: 3}
   m_Name: 
@@ -863,7 +863,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053177299479143529}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e09c8d926ba07634ca312f40ad76e211, type: 3}
   m_Name: 
@@ -3739,6 +3739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7078439243783247304}
+  - component: {fileID: 4401885730163963391}
   m_Layer: 0
   m_Name: Gate
   m_TagString: Untagged
@@ -3776,6 +3777,42 @@ Transform:
   - {fileID: 4636717838882552272}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4401885730163963391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5225395550541803141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f62e3c95d7a6cf4c9aadc377d9f92cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StarGate
+  gateId: gate
+  starsRequired: 1
+  doormanName: Doorman
+  notEnoughLines:
+  - You need {0} stars to pass. You've got {1}.
+  enoughLines:
+  - You need {0} stars to pass. Let's see them stars, kid.
+  alreadyUnlockedLines:
+  - Go on through.
+  pathBlocker: {fileID: 4718282930792587540}
+  talkRange: 3
+  talkPromptMessage: E to talk
+  talkLookAt: {fileID: 4981855314669302898}
+  doorman: {fileID: 4981855314669302898}
+  player: {fileID: 0}
+  playerMovement: {fileID: 0}
+  thirdPersonCamera: {fileID: 0}
+  metalDetector: {fileID: 0}
+  presentHoldSeconds: 2
+  playerAnimator: {fileID: 0}
+  doormanAnimator: {fileID: 4418233288288325963}
+  playerPresentTrigger: Present
+  doormanInspectTrigger: InspectOpen
+  doormanOpenStateName: Doorman_open_gate
 --- !u!1 &5451983791542006283
 GameObject:
   m_ObjectHideFlags: 0
