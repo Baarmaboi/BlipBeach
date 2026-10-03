@@ -147,6 +147,11 @@ public class ShopUI : MonoBehaviour
             thirdPersonCamera = FindFirstObjectByType<ThirdPersonCamera>();
         }
 
+        if (playerMovement == null)
+        {
+            playerMovement = FindFirstObjectByType<PlayerMovement>();
+        }
+
         enteredFixedShot = false;
         if (shopCam != null && thirdPersonCamera != null)
         {
@@ -199,6 +204,11 @@ public class ShopUI : MonoBehaviour
 
     private void ResolveReferences()
     {
+        if (playerMovement == null)
+        {
+            playerMovement = FindFirstObjectByType<PlayerMovement>();
+        }
+
         if (thirdPersonCamera == null)
         {
             thirdPersonCamera = FindFirstObjectByType<ThirdPersonCamera>();

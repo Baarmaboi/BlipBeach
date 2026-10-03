@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df61d01961b725d4992c60df7745bf20, type: 3}
+  m_Name: Quest_JumboLure
+  m_EditorClassIdentifier: Assembly-CSharp::QuestDefinition
+  questId: jumbo_lure
+  npcName: Jumbo
+  itemDisplayName: Lure
+  locationHint: Fishing at the lighthouse
+  itemIdToUnlock: jumbo_lure
+  storyFlagIdOnComplete: jumbo_lure_returned
+  availableFromDay: 0
+  requiredCompletedQuestId: 
+  offerWindows:
+  - minDay: 1
+    maxDay: 0
+    prerequisiteQuestId: 
+    prerequisiteCompletedOnExactDay: 0
+    prerequisiteCompletedOnMinDay: 0
+    prerequisiteCompletedOnMaxDay: 0
+  dialogueLines:
+  - Hiyah, youngin! A nice day for some fishing, huh? Say, what kind of a rod is
+    that?
+  - Oh, it's not a rod at all, but a metal detector? Say that gives me an idea...
+  - I was casting my facorite lure, but snagged it on something in the sand! I lost
+    it there and then.
+  - Use your detector there and see if you can't find my lure. There'll be a Star
+    in it for ya!
+  searchingDialogueLines:
+  - Haven't have much luck without my lucky lure...
+  - Any luck finding it?
+  turnInDialogueLines:
+  - Wow! You're a master detector! Can't believe you found it.
+  - Now I can finally get on catching again. Here's the Star I promised ya!
+  completedDialogueLines:
+  - Fish be bitin' now for sure!
+  day2CompletedDialogueLines: []
+  day2IncompleteDialogueLines: []
+  day3PerfectDialogueLines: []
+  day3LateDialogueLines: []
+  completedDialogueVariants: []
+  day1BlockedDialogueLines: []
+  day2BlockedDialogueLines: []
+  day3BlockedDialogueLines: []

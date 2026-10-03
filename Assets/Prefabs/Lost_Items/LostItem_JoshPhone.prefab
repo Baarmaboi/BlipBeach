@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4675329993749025926}
   - component: {fileID: 7755096350166410078}
   m_Layer: 0
-  m_Name: LostItem_BillyCamera
+  m_Name: LostItem_JoshPhone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,9 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa9a2ac8d89eb74f84e9b74145c7813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuriedItem
-  itemId: billy_camera
+  itemId: josh_phone
   requiresQuest: 1
-  displayName: Camera
-  ownerName: Billy
+  displayName: Phone
+  ownerName: Josh
   treasureDefinition: {fileID: 0}
   treasureDepth: 1

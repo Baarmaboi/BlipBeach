@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df61d01961b725d4992c60df7745bf20, type: 3}
+  m_Name: Quest_JoshPhone
+  m_EditorClassIdentifier: Assembly-CSharp::QuestDefinition
+  questId: josh_phone
+  npcName: Josh
+  itemDisplayName: Phone
+  locationHint: At the lighthouse
+  itemIdToUnlock: josh_phone
+  storyFlagIdOnComplete: josh_phone_returned
+  availableFromDay: 1
+  requiredCompletedQuestId: 
+  offerWindows:
+  - minDay: 1
+    maxDay: 0
+    prerequisiteQuestId: 
+    prerequisiteCompletedOnExactDay: 0
+    prerequisiteCompletedOnMinDay: 0
+    prerequisiteCompletedOnMaxDay: 0
+  dialogueLines:
+  - Hey, please help! I've lost my phone!
+  - I was taking a walk at the light house and dropped it off the side!
+  - When i went down there to look, i couldn't find it anywhere! It must have buried
+    in the sand.
+  - Please bring it to me if you find it!
+  searchingDialogueLines:
+  - 'Any luck finding my phone? '
+  turnInDialogueLines:
+  - Great! You found my phone! I can finally finish that text.
+  - Here, have this star. Thanks again for your help.
+  completedDialogueLines:
+  - She hasn't still texted back...
+  day2CompletedDialogueLines: []
+  day2IncompleteDialogueLines: []
+  day3PerfectDialogueLines: []
+  day3LateDialogueLines: []
+  completedDialogueVariants: []
+  day1BlockedDialogueLines: []
+  day2BlockedDialogueLines: []
+  day3BlockedDialogueLines: []

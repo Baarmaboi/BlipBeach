@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df61d01961b725d4992c60df7745bf20, type: 3}
+  m_Name: Quest_SueNecklace
+  m_EditorClassIdentifier: Assembly-CSharp::QuestDefinition
+  questId: sue_necklace
+  npcName: Sue
+  itemDisplayName: Necklace
+  locationHint: Near waters edge
+  itemIdToUnlock: sue_necklace
+  storyFlagIdOnComplete: sue_necklace_returned
+  availableFromDay: 1
+  requiredCompletedQuestId: 
+  offerWindows:
+  - minDay: 1
+    maxDay: 0
+    prerequisiteQuestId: 
+    prerequisiteCompletedOnExactDay: 0
+    prerequisiteCompletedOnMinDay: 0
+    prerequisiteCompletedOnMaxDay: 0
+  dialogueLines:
+  - ...
+  - ... Um, y-you haven't happened to have seen a stray necklace anywhere?
+  - I lost mine and I'd really like it back. I was coming out of the water and noticed
+    it missing.
+  - If you see it, could you bring it back to me? It has a cat charm on it.
+  searchingDialogueLines:
+  - ...
+  - H-have you seen my necklace at all?
+  turnInDialogueLines:
+  - ...
+  - T-that's my necklace? Um... thanks...
+  - H-here. You can have this... Thanks for finding my necklace.
+  completedDialogueLines:
+  - ...
+  - ...
+  - T-thanks again... i guess.
+  day2CompletedDialogueLines: []
+  day2IncompleteDialogueLines: []
+  day3PerfectDialogueLines: []
+  day3LateDialogueLines: []
+  completedDialogueVariants: []
+  day1BlockedDialogueLines: []
+  day2BlockedDialogueLines: []
+  day3BlockedDialogueLines: []
